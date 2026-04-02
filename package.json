@@ -1,0 +1,30 @@
+{
+  "name": "solana-agent-kit-plugin-madeonsol",
+  "version": "0.1.0",
+  "description": "Solana Agent Kit plugin for MadeOnSol — KOL intelligence and deployer analytics via x402 micropayments",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": ""
+  },
+  "keywords": ["solana", "agent-kit", "x402", "kol", "trading", "madeonsol"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LamboPoewert/solana-agent-kit-plugin-madeonsol"
+  },
+  "peerDependencies": {
+    "solana-agent-kit": ">=2.0.0",
+    "@x402/fetch": ">=0.1.0",
+    "@x402/core": ">=0.1.0",
+    "@x402/svm": ">=0.1.0",
+    "@solana/kit": ">=2.0.0",
+    "@scure/base": ">=1.0.0"
+  },
+  "dependencies": {
+    "zod": "^3.24.0"
+  }
+}
