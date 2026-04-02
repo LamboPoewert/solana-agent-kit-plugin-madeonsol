@@ -40,6 +40,15 @@ const trades = await agent.methods.kolFeed(agent, { limit: 10, action: "buy" });
 
 Set `SVM_PRIVATE_KEY` in your agent config for automatic x402 USDC payments. The wallet needs SOL (fees) and USDC on Solana mainnet.
 
+## Also Available
+
+| Platform | Package |
+|---|---|
+| TypeScript SDK | [`madeonsol-x402`](https://www.npmjs.com/package/madeonsol-x402) |
+| Python (LangChain, CrewAI) | [`madeonsol-x402`](https://github.com/LamboPoewert/madeonsol-python) on PyPI |
+| MCP Server (Claude, Cursor) | [`mcp-server-madeonsol`](https://www.npmjs.com/package/mcp-server-madeonsol) |
+| ElizaOS | [`@madeonsol/plugin-madeonsol`](https://www.npmjs.com/package/@madeonsol/plugin-madeonsol) |
+
 ## License
 
 MIT
