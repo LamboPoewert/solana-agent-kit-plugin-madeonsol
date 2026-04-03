@@ -2,7 +2,7 @@ import { kolFeedAction } from "./actions/kolFeed.js";
 import { kolCoordinationAction } from "./actions/kolCoordination.js";
 import { kolLeaderboardAction } from "./actions/kolLeaderboard.js";
 import { deployerAlertsAction } from "./actions/deployerAlerts.js";
-import { kolFeed, kolCoordination, kolLeaderboard, deployerAlerts } from "./tools/index.js";
+import { kolFeed, kolCoordination, kolLeaderboard, deployerAlerts, createWebhook, listWebhooks, deleteWebhook, testWebhook, getStreamToken } from "./tools/index.js";
 
 const MadeOnSolPlugin = {
   name: "madeonsol",
@@ -11,6 +11,11 @@ const MadeOnSolPlugin = {
     kolCoordination,
     kolLeaderboard,
     deployerAlerts,
+    createWebhook,
+    listWebhooks,
+    deleteWebhook,
+    testWebhook,
+    getStreamToken,
   },
   actions: [
     kolFeedAction,
@@ -24,5 +29,5 @@ const MadeOnSolPlugin = {
 };
 
 export default MadeOnSolPlugin;
-export { kolFeed, kolCoordination, kolLeaderboard, deployerAlerts };
+export { kolFeed, kolCoordination, kolLeaderboard, deployerAlerts, createWebhook, listWebhooks, deleteWebhook, testWebhook, getStreamToken };
 export { kolFeedAction, kolCoordinationAction, kolLeaderboardAction, deployerAlertsAction };

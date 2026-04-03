@@ -67,3 +67,44 @@ export async function deployerAlerts(agent: Agent, params: { limit?: number; sin
   const f = await initPaidFetch(agent);
   return query(f, "/api/x402/deployer-hunter/alerts", params as Record<string, string | number>);
 }
+
+// ── Webhook & Streaming (RapidAPI key required) ──
+
+async function restQuery(agent: Agent, method: string, path: string, body?: unknown) {
+  const apiKey = agent.config?.RAPIDAPI_KEY || agent.config?.OTHER_API_KEYS?.RAPIDAPI_KEY;
+  if (!apiKey) throw new Error("RAPIDAPI_KEY required for webhook/streaming features");
+  const res = await fetch(`${BASE_URL}/api/v1${path}`, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "x-rapidapi-key": apiKey,
+      "x-rapidapi-host": "madeonsol-solana-kol-tracker-tools-api.p.rapidapi.com",
+    },
+    ...(body ? { body: JSON.stringify(body) } : {}),
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`MadeOnSol API error ${res.status}: ${text}`);
+  }
+  return res.json();
+}
+
+export async function createWebhook(agent: Agent, params: { url: string; events: string[]; filters?: Record<string, unknown> }) {
+  return restQuery(agent, "POST", "/webhooks", params);
+}
+
+export async function listWebhooks(agent: Agent) {
+  return restQuery(agent, "GET", "/webhooks");
+}
+
+export async function deleteWebhook(agent: Agent, params: { id: number }) {
+  return restQuery(agent, "DELETE", `/webhooks/${params.id}`);
+}
+
+export async function testWebhook(agent: Agent, params: { webhook_id: number }) {
+  return restQuery(agent, "POST", "/webhooks/test", params);
+}
+
+export async function getStreamToken(agent: Agent) {
+  return restQuery(agent, "POST", "/stream/token");
+}
