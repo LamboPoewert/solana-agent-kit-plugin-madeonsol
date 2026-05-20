@@ -1,16 +1,40 @@
 {
   "name": "solana-agent-kit-plugin-madeonsol",
-  "version": "0.2.0",
+  "version": "1.8.0",
   "description": "Solana Agent Kit plugin for MadeOnSol — KOL intelligence and deployer analytics via x402 micropayments",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": ""
+    "preflight": "bash ../../scripts/preflight-publish.sh",
+    "prepublishOnly": "npm run preflight && npm run build"
   },
-  "keywords": ["solana", "agent-kit", "x402", "kol", "trading", "madeonsol"],
+  "keywords": [
+    "solana",
+    "agent-kit",
+    "solana-agent-kit",
+    "sendaifun",
+    "plugin",
+    "ai-agent",
+    "x402",
+    "kol",
+    "kol-tracker",
+    "trading",
+    "memecoin",
+    "memecoin-tracker",
+    "pumpfun",
+    "deployer-hunter",
+    "alpha",
+    "alpha-bot",
+    "smart-money",
+    "copy-trading",
+    "madeonsol"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
