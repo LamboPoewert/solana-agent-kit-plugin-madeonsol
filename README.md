@@ -188,6 +188,55 @@ ULTRA only for subscriptions — up to 10 active per user.
 
 > **Don't poll — push.** Median lead time before the second KOL is 12 seconds. WebSocket channel: `kol:first_touches` (PRO+).
 
+### Price Alerts *(new in 1.9)*
+
+CRUD for token dip/recovery price alerts. Fires when a token's market cap crosses your threshold. PRO=5 rules, ULTRA=25.
+
+```ts
+const { alert, webhook_secret } = await agent.methods.priceAlertsCreate(agent, {
+  name: "SOL dip buy",
+  token_mint: "So11111111111111111111111111111111111111112",
+  condition: "below",
+  threshold_mc_usd: 5_000_000_000,
+  cooldown_min: 120,
+  delivery_mode: "both",
+  webhook_url: "https://you.com/hooks/price",
+});
+// store webhook_secret — shown ONCE
+
+await agent.methods.priceAlertsList(agent);
+await agent.methods.priceAlertsGet(agent, { alert_id: "uuid..." });
+await agent.methods.priceAlertsUpdate(agent, { alert_id: "uuid...", updates: { is_active: false } });
+await agent.methods.priceAlertsDelete(agent, { alert_id: "uuid..." });
+```
+
+Also exposed as `MADEONSOL_PRICE_ALERTS_LIST_ACTION` ("my price alerts") and `MADEONSOL_PRICE_ALERTS_CREATE_ACTION` ("alert me when token dips below").
+
+### Scout Leaderboard & KOL Consensus *(new in 1.9)*
+
+| Method / Action | Description |
+|---|---|
+| `agent.methods.scoutLeaderboard(agent, params)` | Top scout-tier KOLs ranked by first-touch follow-on rate, win rate, and ROI (PRO+) |
+| `agent.methods.kolConsensus(agent, params)` | Tokens with the strongest KOL agreement signal (PRO+) |
+| `agent.methods.peakHistory(agent, { mint })` | Historical peak-density windows for a token (PRO+) |
+| `agent.methods.coordinationHistory(agent, params)` | Global coordination event log (PRO+) |
+
+```ts
+const { leaderboard } = await agent.methods.scoutLeaderboard(agent, { period: "30d", limit: 25 });
+const { tokens } = await agent.methods.kolConsensus(agent, { min_kols: 5, period: "24h" });
+```
+
+Also exposed as `MADEONSOL_SCOUT_LEADERBOARD_ACTION` and `MADEONSOL_KOL_CONSENSUS_ACTION`.
+
+### Wallet Derived Stats *(new in 1.9)*
+
+`walletStats` now returns a `stats` object with derived fields: `win_rate` (0-1), `roi`, `verdict` ("strong" | "profitable" | "neutral" | "losing"), and `biggest_miss` (token with the highest post-exit gain the wallet missed).
+
+```ts
+const { stats } = await agent.methods.walletStats(agent, { address: "WALLET_ADDRESS" });
+// stats.win_rate, stats.roi, stats.verdict, stats.biggest_miss
+```
+
 ### Rate-limit headers
 
 Every successful request populates a module-level `lastRateLimit` (limit / remaining / reset / requestId):

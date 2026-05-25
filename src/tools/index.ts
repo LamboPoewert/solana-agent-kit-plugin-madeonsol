@@ -570,3 +570,84 @@ export async function copyTradeSignals(
   const query = qs.toString() ? `?${qs.toString()}` : "";
   return restQuery(agent, "GET", `/copy-trade/signals${query}`);
 }
+
+// ── Price Alerts (PRO/ULTRA, v1.9) ──
+
+export async function priceAlertsList(agent: Agent) {
+  return restQuery(agent, "GET", "/price-alerts");
+}
+
+export async function priceAlertsCreate(
+  agent: Agent,
+  params: {
+    token_mint: string;
+    drop_pct: number;
+    recovery_pct?: number;
+    name?: string;
+    delivery_mode?: "webhook" | "websocket" | "both";
+    webhook_url?: string;
+  },
+) {
+  return restQuery(agent, "POST", "/price-alerts", params);
+}
+
+export async function priceAlertsGet(agent: Agent, params: { id: number }) {
+  return restQuery(agent, "GET", `/price-alerts/${params.id}`);
+}
+
+export async function priceAlertsUpdate(
+  agent: Agent,
+  params: { id: number; updates: Record<string, unknown> },
+) {
+  return restQuery(agent, "PATCH", `/price-alerts/${params.id}`, params.updates);
+}
+
+export async function priceAlertsDelete(agent: Agent, params: { id: number }) {
+  return restQuery(agent, "DELETE", `/price-alerts/${params.id}`);
+}
+
+export async function priceAlertsEvents(
+  agent: Agent,
+  params: { alert_id?: number; event_type?: "dip" | "recovery"; since?: string; limit?: number } = {},
+) {
+  const qs = new URLSearchParams();
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined) qs.set(k, String(v));
+  }
+  const query = qs.toString() ? `?${qs.toString()}` : "";
+  return restQuery(agent, "GET", `/price-alerts/events${query}`);
+}
+
+// ── v1.9 new endpoints ──
+
+export async function scoutLeaderboard(
+  agent: Agent,
+  params: { limit?: number; scout_tier?: "S" | "A" | "B" | "C"; sort?: string } = {},
+) {
+  const qs = new URLSearchParams();
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined) qs.set(k, String(v));
+  }
+  const query = qs.toString() ? `?${qs.toString()}` : "";
+  return restQuery(agent, "GET", `/kol/scouts/leaderboard${query}`);
+}
+
+export async function coordinationHistory(
+  agent: Agent,
+  params: { limit?: number; since?: string; min_score?: number } = {},
+) {
+  const qs = new URLSearchParams();
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined) qs.set(k, String(v));
+  }
+  const query = qs.toString() ? `?${qs.toString()}` : "";
+  return restQuery(agent, "GET", `/kol/coordination/history${query}`);
+}
+
+export async function kolConsensus(agent: Agent, params: { mint: string }) {
+  return restQuery(agent, "GET", `/tokens/${encodeURIComponent(params.mint)}/kol-consensus`);
+}
+
+export async function peakHistory(agent: Agent, params: { mint: string }) {
+  return restQuery(agent, "GET", `/tokens/${encodeURIComponent(params.mint)}/peak-history`);
+}
