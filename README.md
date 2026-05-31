@@ -9,7 +9,7 @@
 
 [Solana Agent Kit](https://github.com/sendaifun/solana-agent-kit) plugin for [MadeOnSol](https://madeonsol.com) — Solana KOL intelligence, deployer analytics, and wallet tracking.
 
-> Real-time Solana trading intelligence: track 1,000+ KOL wallets with <3s latency, score 6,700+ Pump.fun deployers by reputation, detect multi-KOL coordination signals, monitor any Solana wallet for swaps and transfers, and stream every DEX trade. Free tier: 200 requests/day at [madeonsol.com/pricing](https://madeonsol.com/pricing) — no credit card required.
+> Real-time Solana trading intelligence: track 1,000+ KOL wallets with <3s latency, score 23,000+ Pump.fun deployers by reputation, detect multi-KOL coordination signals, monitor any Solana wallet for swaps and transfers, and stream every DEX trade. Free tier: 200 requests/day at [madeonsol.com/pricing](https://madeonsol.com/pricing) — no credit card required.
 
 > **New in 1.7.0** *(2026-05-12)* — **Account introspection + filtered token directory.** Two new actions: `meAction` (`GET /me`) returns your tier, daily/burst quota state, remaining requests, and per-feature usage so the agent can self-throttle; `tokensListAction` (`GET /tokens`, PRO+) exposes the full filtered/sortable token directory with MC band, liquidity floor, recent-activity window, primary DEX, authority flags, computed 1h volume floor, MEV-share ceiling, and MC change deltas — defaults to `min_liq=2000` to skip dust. Token responses now carry velocity / MEV-share fields. `/token/{mint}` returns structured 400 errors (`code`, `reason`, `example`, `docs`) instead of bare 400s. Deprecated `avg_entry_mc_usd` removed from leaderboards.
 
@@ -99,7 +99,7 @@ These are exposed via `agent.methods.*` (no LLM action wrappers — call directl
 
 ### Alpha Wallet Intelligence
 
-Scored from 47,000+ early-buyer records (wallets seen in the first 20 buyers of Pump.fun tokens).
+Scored from 1M+ early-buyer records (wallets seen in the first 20 buyers of Pump.fun tokens).
 
 ```ts
 await agent.methods.alphaLeaderboard(agent, { limit: 100 });            // Free/Pro=100, ULTRA=500 + bot signals
@@ -252,8 +252,9 @@ console.log(lastRateLimit); // { limit: "10000", remaining: "9999", reset: "..."
 | Tier | Price | Wallets tracked | Requests/day |
 |------|-------|-----------------|--------------|
 | Free | $0 | 10 | 200 |
-| Pro | $49/mo | 50 | 10,000 |
-| Ultra | $149/mo | 100 + WS events | 100,000 |
+| BASIC | $29/mo | 10 | 200 (all endpoints) |
+| Pro | $99/mo | 50 | 10,000 |
+| Ultra | $299/mo | 100 + WS events | 100,000 |
 
 Free tier returns the full REST response shape on every endpoint — real wallets, TX signatures, full precision. Paid tiers unlock webhooks, WebSockets, rule engines, and ULTRA-only data depth. Get a key at [madeonsol.com/pricing](https://madeonsol.com/pricing).
 
