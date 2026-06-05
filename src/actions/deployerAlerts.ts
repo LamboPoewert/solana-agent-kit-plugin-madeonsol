@@ -12,8 +12,15 @@ export const deployerAlertsAction = {
     limit: z.number().min(1).max(100).default(10).describe("Number of alerts"),
     offset: z.number().min(0).default(0).describe("Pagination offset"),
     since: z.string().optional().describe("ISO8601 timestamp to filter alerts after"),
+    tier: z
+      .enum(["elite", "good", "moderate", "rising", "cold"])
+      .optional()
+      .describe("Filter by deployer tier. PRO/ULTRA subscribers only — BASIC callers receive 403."),
   }),
-  handler: async (agent: unknown, input: { limit?: number; offset?: number; since?: string }) => {
+  handler: async (
+    agent: unknown,
+    input: { limit?: number; offset?: number; since?: string; tier?: "elite" | "good" | "moderate" | "rising" | "cold" },
+  ) => {
     try {
       const data = await deployerAlerts(agent, input);
       return { status: "success", result: data };

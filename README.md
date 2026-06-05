@@ -11,8 +11,6 @@
 
 > Real-time Solana trading intelligence: track 1,069 KOL wallets with <3s latency, score 23,000+ Pump.fun deployers, surface deshred deploy signals ~500ms before on-chain confirmation, detect multi-KOL coordination, and stream every DEX trade. Free tier: 200 requests/day at [madeonsol.com/pricing](https://madeonsol.com/pricing) — no credit card required.
 
-> **New in 1.10** — **Deshred Sniper.** `agent.methods.sniperRecent()` — deshred deploy feed ~500ms pre-confirm. `agent.methods.sniperWatchlistAdd()` / `sniperWatchlist()` for custom deployer tracking (ULTRA). Use `sniper:deploys` WebSocket for live push.
->
 > **New in 1.9** — **Price alerts, scout leaderboard, coordination history.** `agent.methods.priceAlertsCreate()` (PRO=5, ULTRA=25). `agent.methods.scoutLeaderboard()`, `kolConsensus()`, `peakHistory()`, `coordinationHistory()`. `walletStats` now returns `derived`: win_rate, roi, verdict, biggest_miss.
 >
 > **New in 1.8** — **Universal Wallet API.** `agent.methods.walletStats()`, `walletPnl()`, `walletPositions()`, `walletTrades()` — FIFO cost-basis PnL for any wallet. PRO+. Cache hits free.
@@ -257,10 +255,9 @@ console.log(lastRateLimit); // { limit: "10000", remaining: "9999", reset: "..."
 
 | Tier | Price | Wallets tracked | Requests/day |
 |------|-------|-----------------|--------------|
-| Free | $0 | 10 | 200 |
-| BASIC | $29/mo | 10 | 200 (all endpoints) |
-| Pro | $99/mo | 50 | 10,000 |
-| Ultra | $299/mo | 100 + WS events | 100,000 |
+| BASIC (free) | $0 | 10 | 200 |
+| PRO | $49/mo ($490/yr) | 50 | 10,000 |
+| ULTRA | $149/mo ($1,490/yr) | 100 + WS events | 100,000 |
 
 Free tier returns the full REST response shape on every endpoint — real wallets, TX signatures, full precision. Paid tiers unlock webhooks, WebSockets, rule engines, and ULTRA-only data depth. Get a key at [madeonsol.com/pricing](https://madeonsol.com/pricing).
 

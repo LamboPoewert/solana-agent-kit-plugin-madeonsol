@@ -49,7 +49,7 @@ export async function initAuth(agent: Agent): Promise<void> {
 
   if (apiKey) {
     _authMode = "madeonsol";
-    _authHeaders = { Authorization: `Bearer ${apiKey}` };
+    _authHeaders = { Authorization: `Bearer ${apiKey}`, "User-Agent": "solana-agent-kit-plugin-madeonsol/1.9.0" };
     _paidFetch = fetch;
     console.log("[madeonsol] Using MadeOnSol API key (Bearer auth)");
   } else if (privateKey) {
