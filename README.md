@@ -11,6 +11,8 @@
 
 > Real-time Solana trading intelligence: track 1,069 KOL wallets with <3s latency, score 23,000+ Pump.fun deployers, surface deshred deploy signals ~500ms before on-chain confirmation, detect multi-KOL coordination, and stream every DEX trade. Free tier: 200 requests/day at [madeonsol.com/pricing](https://madeonsol.com/pricing) — no credit card required.
 
+> **New in 1.11.0** — **Token risk score.** New tool `tokenRisk()` + action `MADEONSOL_TOKEN_RISK_ACTION` — a transparent 0–100 rug-risk/safety score (higher = riskier) with a `band` (safe/caution/danger), an explainable `factors[]` array, and the raw `inputs` (mint/freeze authority, liquidity, liq-to-MC ratio, transfer fee, launch cohort, deployer bond rate, KOL signal, blacklist). PRO/ULTRA only.
+
 > **New in 1.10.0** — `tokensList()` gains three new filter params: `min_liq_mc_ratio`, `max_liq_mc_ratio`, and `deployer_tier`. Response items now include `liquidity_to_mc_ratio` and `deployer_tier`. KOL leaderboard entries now include `median_hold_minutes_30d` and `percentile_early_entry_30d`. Token endpoints now return `liquidity_to_mc_ratio`, `launch_cohort_sol`, and `launch_cohort_size`.
 
 > **New in 1.9.3** — Deployer alerts now surface `runner_rate` + `labeled_tokens` (fraction of a deployer's labeled tokens that ran vs dumped, gate on `labeled_tokens` ≥3) and `avg_time_to_bond_minutes`.
@@ -122,6 +124,7 @@ await agent.methods.alphaLinked(agent, { wallet: "WALLET" });           // ULTRA
 ```ts
 await agent.methods.tokenCapTable(agent, { mint: "MINT" });             // PRO=10, ULTRA=20 first non-deployer buyers
 await agent.methods.tokenBuyerQuality(agent, { mint: "MINT" });         // 0–100 buyer-quality score (5-min cached)
+await agent.methods.tokenRisk(agent, { mint: "MINT" });                 // PRO+ 0–100 rug-risk/safety score + band + factors
 ```
 
 ### Copy-Trade Rules (PRO/ULTRA)

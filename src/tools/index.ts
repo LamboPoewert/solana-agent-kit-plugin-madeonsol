@@ -49,7 +49,7 @@ export async function initAuth(agent: Agent): Promise<void> {
 
   if (apiKey) {
     _authMode = "madeonsol";
-    _authHeaders = { Authorization: `Bearer ${apiKey}`, "User-Agent": "solana-agent-kit-plugin-madeonsol/1.10.0" };
+    _authHeaders = { Authorization: `Bearer ${apiKey}`, "User-Agent": "solana-agent-kit-plugin-madeonsol/1.11.0" };
     _paidFetch = fetch;
     console.log("[madeonsol] Using MadeOnSol API key (Bearer auth)");
   } else if (privateKey) {
@@ -359,6 +359,11 @@ export async function tokenCapTable(agent: Agent, params: { mint: string }) {
 
 export async function tokenBuyerQuality(agent: Agent, params: { mint: string }) {
   return restQuery(agent, "GET", `/tokens/${encodeURIComponent(params.mint)}/buyer-quality`);
+}
+
+/** Transparent 0–100 rug-risk/safety score (higher = riskier) with band, explainable factors, and raw inputs. PRO/ULTRA only. */
+export async function tokenRisk(agent: Agent, params: { mint: string }) {
+  return restQuery(agent, "GET", `/tokens/${encodeURIComponent(params.mint)}/risk`);
 }
 
 /** Bulk buyer-quality scoring for up to 50 mints. Shares the 5-min LRU cache with the single-mint endpoint. */
