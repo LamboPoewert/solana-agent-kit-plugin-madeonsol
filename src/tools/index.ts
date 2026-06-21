@@ -366,6 +366,17 @@ export async function tokenRisk(agent: Agent, params: { mint: string }) {
   return restQuery(agent, "GET", `/tokens/${encodeURIComponent(params.mint)}/risk`);
 }
 
+/** Historical OHLCV candles (1m/5m/15m/1h/4h/1d) aggregated from the trade firehose. PRO=OHLCV 30d; ULTRA=+net flow, liquidity delta, full history. PRO/ULTRA only. */
+export async function tokenCandles(agent: Agent, params: { mint: string; tf?: string; limit?: number; from?: string; to?: string }) {
+  const qs = new URLSearchParams();
+  if (params.tf !== undefined) qs.set("tf", params.tf);
+  if (params.limit !== undefined) qs.set("limit", String(params.limit));
+  if (params.from !== undefined) qs.set("from", params.from);
+  if (params.to !== undefined) qs.set("to", params.to);
+  const query = qs.toString() ? `?${qs.toString()}` : "";
+  return restQuery(agent, "GET", `/tokens/${encodeURIComponent(params.mint)}/candles${query}`);
+}
+
 /** Bulk buyer-quality scoring for up to 50 mints. Shares the 5-min LRU cache with the single-mint endpoint. */
 export async function tokenBuyerQualityBatch(agent: Agent, params: { mints: string[] }) {
   return restQuery(agent, "POST", "/tokens/batch/buyer-quality", { mints: params.mints });
@@ -386,36 +397,42 @@ export async function tokenBatch(agent: Agent, params: { mints: string[] }) {
 // ── Copy-Trade Rules (PRO/ULTRA) ──
 
 export async function copyTradeList(agent: Agent) {
-  return restQuery(agent, "GET", "/copy-trade/rules");
+  return restQuery(agent, "GET", "/copytrade/subscriptions");
 }
 
 export async function copyTradeCreate(
   agent: Agent,
   params: {
-    name: string;
-    source_wallet: string;
-    is_active?: boolean;
+    /** 1-50 wallets to copy trades from. */
+    source_wallets: string[];
+    /** Required. Fixed SOL amount, proportional multiplier, or percent of source — per sizing_mode. */
+    sizing_amount: number;
+    name?: string;
+    min_trade_sol?: number;
+    only_action?: "buy" | "sell" | "both";
+    sizing_mode?: "fixed" | "proportional" | "percent_source";
+    delivery_mode?: "webhook" | "websocket" | "both";
     webhook_url?: string;
-    delivery?: "webhook" | "websocket" | "both";
-    filters?: Record<string, unknown>;
+    min_mc_usd?: number | null;
+    max_mc_usd?: number | null;
   },
 ) {
-  return restQuery(agent, "POST", "/copy-trade/rules", params);
+  return restQuery(agent, "POST", "/copytrade/subscriptions", params);
 }
 
 export async function copyTradeGet(agent: Agent, params: { rule_id: string }) {
-  return restQuery(agent, "GET", `/copy-trade/rules/${encodeURIComponent(params.rule_id)}`);
+  return restQuery(agent, "GET", `/copytrade/subscriptions/${encodeURIComponent(params.rule_id)}`);
 }
 
 export async function copyTradeUpdate(
   agent: Agent,
   params: { rule_id: string; updates: Record<string, unknown> },
 ) {
-  return restQuery(agent, "PATCH", `/copy-trade/rules/${encodeURIComponent(params.rule_id)}`, params.updates);
+  return restQuery(agent, "PATCH", `/copytrade/subscriptions/${encodeURIComponent(params.rule_id)}`, params.updates);
 }
 
 export async function copyTradeDelete(agent: Agent, params: { rule_id: string }) {
-  return restQuery(agent, "DELETE", `/copy-trade/rules/${encodeURIComponent(params.rule_id)}`);
+  return restQuery(agent, "DELETE", `/copytrade/subscriptions/${encodeURIComponent(params.rule_id)}`);
 }
 
 // ── Coordination Alerts (PRO/ULTRA, v1.1) ──
@@ -579,7 +596,7 @@ export async function copyTradeSignals(
     if (v !== undefined) qs.set(k, String(v));
   }
   const query = qs.toString() ? `?${qs.toString()}` : "";
-  return restQuery(agent, "GET", `/copy-trade/signals${query}`);
+  return restQuery(agent, "GET", `/copytrade/signals${query}`);
 }
 
 // ── Price Alerts (PRO/ULTRA, v1.9) ──

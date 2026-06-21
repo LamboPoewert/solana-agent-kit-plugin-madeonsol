@@ -12,12 +12,13 @@ import { kolFirstTouchesAction } from "./actions/kolFirstTouches.js";
 import { meAction } from "./actions/me.js";
 import { tokensListAction } from "./actions/tokensList.js";
 import { tokenRiskAction } from "./actions/tokenRisk.js";
+import { tokenCandlesAction } from "./actions/tokenCandles.js";
 import {
   kolFeed, kolCoordination, kolLeaderboard, deployerAlerts, kolPnl, kolTrendingTokens, kolTokenEntryOrder, kolCompare, kolAlertsRecent,
   createWebhook, listWebhooks, deleteWebhook, testWebhook, getStreamToken,
   walletTrackerWatchlist, walletTrackerAdd, walletTrackerRemove, walletTrackerTrades, walletTrackerSummary,
   alphaLeaderboard, alphaWallet, alphaLinked,
-  tokenCapTable, tokenBuyerQuality, tokenRisk,
+  tokenCapTable, tokenBuyerQuality, tokenRisk, tokenCandles,
   copyTradeList, copyTradeCreate, copyTradeGet, copyTradeUpdate, copyTradeDelete, copyTradeSignals,
   coordinationAlertsList, coordinationAlertsCreate, coordinationAlertsGet, coordinationAlertsUpdate, coordinationAlertsDelete,
   kolFirstTouches, firstTouchSubscriptionsList, firstTouchSubscriptionsCreate, firstTouchSubscriptionsGet, firstTouchSubscriptionsUpdate, firstTouchSubscriptionsDelete,
@@ -56,6 +57,7 @@ const MadeOnSolPlugin = {
     tokenCapTable,
     tokenBuyerQuality,
     tokenRisk,
+    tokenCandles,
     copyTradeList,
     copyTradeCreate,
     copyTradeGet,
@@ -109,6 +111,7 @@ const MadeOnSolPlugin = {
     meAction,
     tokensListAction,
     tokenRiskAction,
+    tokenCandlesAction,
     walletStatsAction,
     walletPnlAction,
     walletPositionsAction,
@@ -125,7 +128,7 @@ export {
   createWebhook, listWebhooks, deleteWebhook, testWebhook, getStreamToken,
   walletTrackerWatchlist, walletTrackerAdd, walletTrackerRemove, walletTrackerTrades, walletTrackerSummary,
   alphaLeaderboard, alphaWallet, alphaLinked,
-  tokenCapTable, tokenBuyerQuality, tokenRisk,
+  tokenCapTable, tokenBuyerQuality, tokenRisk, tokenCandles,
   copyTradeList, copyTradeCreate, copyTradeGet, copyTradeUpdate, copyTradeDelete, copyTradeSignals,
   coordinationAlertsList, coordinationAlertsCreate, coordinationAlertsGet, coordinationAlertsUpdate, coordinationAlertsDelete,
   kolFirstTouches, firstTouchSubscriptionsList, firstTouchSubscriptionsCreate, firstTouchSubscriptionsGet, firstTouchSubscriptionsUpdate, firstTouchSubscriptionsDelete,
@@ -137,4 +140,4 @@ export {
 export { kolFeedAction, kolCoordinationAction, kolLeaderboardAction, deployerAlertsAction, kolPnlAction, kolTrendingTokensAction, kolTokenEntryOrderAction, kolCompareAction, kolAlertsRecentAction, kolFirstTouchesAction };
 export { walletTrackerWatchlistAction, walletTrackerAddAction, walletTrackerRemoveAction, walletTrackerTradesAction, walletTrackerSummaryAction };
 export { walletStatsAction, walletPnlAction, walletPositionsAction, walletTradesAction };
-export { meAction, tokensListAction, tokenRiskAction };
+export { meAction, tokensListAction, tokenRiskAction, tokenCandlesAction };

@@ -11,6 +11,8 @@
 
 > Real-time Solana trading intelligence: track 1,069 KOL wallets with <3s latency, score 23,000+ Pump.fun deployers, surface deshred deploy signals ~500ms before on-chain confirmation, detect multi-KOL coordination, and stream every DEX trade. Free tier: 200 requests/day at [madeonsol.com/pricing](https://madeonsol.com/pricing) — no credit card required.
 
+> **New in 1.12.0** — **Token OHLCV candles.** New tool `tokenCandles()` + action `MADEONSOL_TOKEN_CANDLES_ACTION` — historical price candles (1m/5m/15m/1h/4h/1d) aggregated from the on-chain trade firehose. Each candle has `t/open/high/low/close/volume_usd/trades/market_cap_usd`. PRO returns OHLCV for the last 30 days; ULTRA adds buy/sell volume + count splits, net flow, MEV volume, open/close liquidity, high/low MC, and full history. PRO/ULTRA only.
+>
 > **New in 1.11.0** — **Token risk score.** New tool `tokenRisk()` + action `MADEONSOL_TOKEN_RISK_ACTION` — a transparent 0–100 rug-risk/safety score (higher = riskier) with a `band` (safe/caution/danger), an explainable `factors[]` array, and the raw `inputs` (mint/freeze authority, liquidity, liq-to-MC ratio, transfer fee, launch cohort, deployer bond rate, KOL signal, blacklist). PRO/ULTRA only.
 
 > **New in 1.10.0** — `tokensList()` gains three new filter params: `min_liq_mc_ratio`, `max_liq_mc_ratio`, and `deployer_tier`. Response items now include `liquidity_to_mc_ratio` and `deployer_tier`. KOL leaderboard entries now include `median_hold_minutes_30d` and `percentile_early_entry_30d`. Token endpoints now return `liquidity_to_mc_ratio`, `launch_cohort_sol`, and `launch_cohort_size`.
@@ -125,6 +127,7 @@ await agent.methods.alphaLinked(agent, { wallet: "WALLET" });           // ULTRA
 await agent.methods.tokenCapTable(agent, { mint: "MINT" });             // PRO=10, ULTRA=20 first non-deployer buyers
 await agent.methods.tokenBuyerQuality(agent, { mint: "MINT" });         // 0–100 buyer-quality score (5-min cached)
 await agent.methods.tokenRisk(agent, { mint: "MINT" });                 // PRO+ 0–100 rug-risk/safety score + band + factors
+await agent.methods.tokenCandles(agent, { mint: "MINT", tf: "1h" });    // PRO+ OHLCV candles (1m–1d); ULTRA=+net flow, liquidity, full history
 ```
 
 ### Copy-Trade Rules (PRO/ULTRA)
@@ -134,9 +137,12 @@ Server-side rules that fire signals when a watched source wallet trades. Deliver
 ```ts
 await agent.methods.copyTradeList(agent);
 await agent.methods.copyTradeCreate(agent, {
-  name: "Track Whale",
-  source_wallet: "WALLET",
-  delivery: "webhook",
+  name: "Track Whales",
+  source_wallets: ["WALLET_A", "WALLET_B"],  // 1-50 wallets
+  sizing_mode: "fixed",
+  sizing_amount: 0.5,                          // required
+  only_action: "buy",
+  delivery_mode: "webhook",
   webhook_url: "https://you.com/hook",
 });
 await agent.methods.copyTradeSignals(agent, { limit: 50 });             // up to 7 days
